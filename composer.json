@@ -1,0 +1,14 @@
+{
+    "name": "strikewood/soap-first-atlantic-commerce-api",
+    "description": "First Atlantic Commerce payment gateway SOAP API",
+    "keywords": [
+        "first atlantic commerce",
+        "payment processing",
+        "api"
+    ],
+    "homepage": "https://github.com/strikewood/soap-first-atlantic-commerce-api",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.6"
+    }
+}
