@@ -7,9 +7,9 @@ use Omnipay\Common\Message\RequestInterface;
 use Omnipay\FirstAtlanticCommerce\Message\AbstractResponse;
 
 /**
- * FACPG2 Transaction Modification Response
+ * FACPG2 Transaction Status Response
  */
-class TransactionModificationResponse extends AbstractResponse
+class StatusResponse extends AbstractResponse
 {
     /**
      * Constructor
@@ -34,7 +34,7 @@ class TransactionModificationResponse extends AbstractResponse
      */
     public function isSuccessful()
     {
-        return isset($this->data['CreditCardTransactionResults']['ResponseCode']) and '1' === $this->data['CreditCardTransactionResults']['ResponseCode'];
+        return isset($this->data['ResponseCode']) and '1' === $this->data['ResponseCode'];
     }
 
     /**
@@ -44,7 +44,7 @@ class TransactionModificationResponse extends AbstractResponse
      */
     public function getMessage()
     {
-        return isset($this->data['CreditCardTransactionResults']['ReasonCodeDescription']) ? $this->data['CreditCardTransactionResults']['ReasonCodeDescription'] : null;
+        return isset($this->data['ReasonCodeDescription']) ? $this->data['ReasonCodeDescription'] : null;
     }
 
     /**
@@ -54,6 +54,6 @@ class TransactionModificationResponse extends AbstractResponse
      */
     public function getTransactionReference()
     {
-        return isset($this->data['CreditCardTransactionResults']['ReferenceNumber']) ? $this->data['CreditCardTransactionResults']['ReferenceNumber'] : null;
+        return isset($this->data['ReferenceNumber']) ? $this->data['ReferenceNumber'] : null;
     }
 }
