@@ -57,4 +57,22 @@ trait ParameterTrait
     {
         return $this->getParameter('acquirerId');
     }
+
+    /**
+     * @param boolean $value Require AVS Check.
+     *
+     * @return boolean $value Require AVS Check.
+     */
+    public function setRequireAvsCheck($value)
+    {
+        return $this->setParameter('requireAvsCheck', $value);
+    }
+
+    /**
+     * @return boolean $value Require AVS Check.
+     */
+    public function getRequireAvsCheck()
+    {
+        return $this->getParameter('requireAvsCheck');
+    }
 }

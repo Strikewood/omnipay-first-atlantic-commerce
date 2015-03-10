@@ -29,7 +29,8 @@ class Gateway extends AbstractGateway
             'merchantId'       => null,
             'merchantPassword' => null,
             'acquirerId'       => '464748',
-            'testMode'         => false
+            'testMode'         => false,
+            'requireAvsCheck'  => true
         ];
     }
 
@@ -79,5 +80,29 @@ class Gateway extends AbstractGateway
     public function refund(array $parameters = [])
     {
         return $this->createRequest('\Omnipay\FirstAtlanticCommerce\Message\RefundRequest', $parameters);
+    }
+
+    /**
+     *  Reverse an already submitted transaction that hasn't been settled.
+     *
+     * @param array $parameters
+     *
+     * @return \Omnipay\FirstAtlanticCommerce\Message\VoidRequest
+     */
+    public function void(array $parameters = [])
+    {
+        return $this->createRequest('\Omnipay\FirstAtlanticCommerce\Message\VoidRequest', $parameters);
+    }
+
+    /**
+     *  Retrieve the status of any previous transaction.
+     *
+     * @param array $parameters
+     *
+     * @return \Omnipay\FirstAtlanticCommerce\Message\StatusRequest
+     */
+    public function status(array $parameters = [])
+    {
+        return $this->createRequest('\Omnipay\FirstAtlanticCommerce\Message\StatusRequest', $parameters);
     }
 }
