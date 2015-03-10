@@ -55,24 +55,6 @@ abstract class AbstractRequest extends BaseAbstractRequest
     }
 
     /**
-     * Returns the signature for the request.
-     *
-     * @return string base64 encoded sha1 hash of the merchantPassword, merchantId,
-     *    acquirerId, transactionId, amount and currency code.
-     */
-    protected function generateSignature()
-    {
-        $signature  = $this->getMerchantPassword();
-        $signature .= $this->getMerchantId();
-        $signature .= $this->getAcquirerId();
-        $signature .= $this->getTransactionId();
-        $signature .= $this->formatAmount();
-        $signature .= $this->getCurrencyNumeric();
-
-        return base64_encode( sha1($signature, true) );
-    }
-
-    /**
      * Returns the live or test endpoint depending on TestMode.
      *
      * @return string Endpoint URL

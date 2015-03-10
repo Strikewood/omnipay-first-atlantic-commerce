@@ -22,6 +22,24 @@ class AuthorizeRequest extends AbstractRequest
     protected $transactionCode = 0;
 
     /**
+     * Returns the signature for the request.
+     *
+     * @return string base64 encoded sha1 hash of the merchantPassword, merchantId,
+     *    acquirerId, transactionId, amount and currency code.
+     */
+    protected function generateSignature()
+    {
+        $signature  = $this->getMerchantPassword();
+        $signature .= $this->getMerchantId();
+        $signature .= $this->getAcquirerId();
+        $signature .= $this->getTransactionId();
+        $signature .= $this->formatAmount();
+        $signature .= $this->getCurrencyNumeric();
+
+        return base64_encode( sha1($signature, true) );
+    }
+
+    /**
      * Validate and construct the data for the request
      *
      * @return array
