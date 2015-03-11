@@ -1,5 +1,8 @@
 # Omnipay: First Atlantic Commerce
-First Atlantic Commerce driver for the Omnipay PHP payment processing library
+
+**First Atlantic Commerce driver for the Omnipay PHP payment processing library**
+
+[![Build Status](https://travis-ci.org/Strikewood/omnipay-first-atlantic-commerce.png?branch=master)](https://travis-ci.org/Strikewood/omnipay-first-atlantic-commerce) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Strikewood/omnipay-first-atlantic-commerce/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Strikewood/omnipay-first-atlantic-commerce/?branch=master) [![Latest Stable Version](https://poser.pugx.org/strikewood/omnipay-first-atlantic-commerce/v/stable.svg)](https://packagist.org/packages/strikewood/omnipay-first-atlantic-commerce) [![Latest Unstable Version](https://poser.pugx.org/strikewood/omnipay-first-atlantic-commerce/v/unstable.svg)](https://packagist.org/packages/strikewood/omnipay-first-atlantic-commerce) [![License](https://poser.pugx.org/strikewood/omnipay-first-atlantic-commerce/license.svg)](https://packagist.org/packages/strikewood/omnipay-first-atlantic-commerce) [![Total Downloads](https://poser.pugx.org/strikewood/omnipay-first-atlantic-commerce/downloads.svg)](https://packagist.org/packages/strikewood/omnipay-first-atlantic-commerce) 
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
 processing library for PHP 5.3+. This package implements First Atlantic Commerce support for Omnipay.
