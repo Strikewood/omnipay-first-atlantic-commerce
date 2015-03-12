@@ -2,6 +2,7 @@
 
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
+use Alcohol\ISO3166;
 use Omnipay\FirstAtlanticCommerce\Message\AbstractRequest;
 
 /**
@@ -66,9 +67,14 @@ class AuthorizeRequest extends AbstractRequest
             'CardCVV2'       => $this->getCard()->getCvv(),
             'CardExpiryDate' => $this->getCard()->getExpiryDate('my'),
             'CardNumber'     => $this->getCard()->getNumber(),
-            'IssueNumber'    => $this->getCard()->getIssueNumber(),
-            'StartDate'      => $this->getCard()->getStartDate('my')
+            'IssueNumber'    => $this->getCard()->getIssueNumber()
         ];
+
+        // Only pass the StartDate if year/month are set otherwise it returns 1299
+        if ( $this->getCard()->getStartYear() and $this->getCard()->getStartMonth() )
+        {
+            $cardDetails['StartDate'] = $this->getCard()->getStartDate('my');
+        }
 
         $billingDetails = [
             'BillToAddress'     => $this->getCard()->getAddress1(),
@@ -76,7 +82,7 @@ class AuthorizeRequest extends AbstractRequest
             'BillToFirstName'   => $this->getCard()->getFirstName(),
             'BillToLastName'    => $this->getCard()->getLastName(),
             'BillToCity'        => $this->getCard()->getCity(),
-            'BillToCountry'     => $this->getCard()->getCountry(),
+            'BillToCountry'     => $this->formatCountry(),
             'BillToEmail'       => $this->getCard()->getEmail(),
             'BillToTelephone'   => $this->getCard()->getPhone(),
             'BillToFax'         => $this->getCard()->getFax()
@@ -85,7 +91,7 @@ class AuthorizeRequest extends AbstractRequest
         // FAC only accepts two digit state abbreviations from the USA
         if ( $billingDetails['BillToCountry'] == 840 )
         {
-            $billingDetails['BillToState'] = $this->getCard()->getState();
+            $billingDetails['BillToState'] = $this->getState();
         }
 
         $data = [
@@ -95,6 +101,57 @@ class AuthorizeRequest extends AbstractRequest
         ];
 
         return $data;
+    }
+
+    /**
+     * Returns the country as the numeric ISO 3166-1 code
+     *
+     * @throws Omnipay\Common\Exception\InvalidRequestException
+     *
+     * @return int ISO 3166-1 numeric country
+     */
+    protected function formatCountry()
+    {
+        $country = $this->getCard()->getCountry();
+
+        if ( !is_numeric($country) )
+        {
+            $iso3166 = new ISO3166;
+
+            if ( strlen($country) == 2 )
+            {
+                $country = $iso3166->getByAlpha2($country)['numeric'];
+            }
+            elseif ( strlen($country) == 3 )
+            {
+                $country = $iso3166->getByAlpha3($country)['numeric'];
+            }
+            else
+            {
+                throw new InvalidRequestException("The country parameter must be ISO 3166-1 numeric, aplha2 or alpha3.");
+            }
+        }
+
+        return $country;
+    }
+
+    /**
+     * Returns the billing state if its a US abbreviation or throws an exception
+     *
+     * @throws Omnipay\Common\Exception\InvalidRequestException
+     *
+     * @return string State abbreviation
+     */
+    public function getState()
+    {
+        $state = $this->getCard()->getState();
+
+        if ( strlen($state) != 2 )
+        {
+            throw new InvalidRequestException("The state must be a two character abbreviation.");
+        }
+
+        return $state;
     }
 
     /**
