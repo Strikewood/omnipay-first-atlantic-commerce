@@ -3,7 +3,6 @@
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
 use Omnipay\Common\Message\AbstractRequest as BaseAbstractRequest;
-use Omnipay\Common\Message\RequestInterface;
 use Omnipay\FirstAtlanticCommerce\ParameterTrait;
 use SimpleXMLElement;
 
@@ -101,7 +100,8 @@ abstract class AbstractRequest extends BaseAbstractRequest
      */
     protected function xmlSerialize($data, $xml = null)
     {
-        if ( !$xml instanceof SimpleXMLElement ) {
+        if ( !$xml instanceof SimpleXMLElement )
+        {
             $xml = new SimpleXMLElement('<'. $this->requestName .' xmlns="'. $this->namespace .'" />');
         }
 

@@ -71,7 +71,7 @@ class AuthorizeRequest extends AbstractRequest
         ];
 
         // Only pass the StartDate if year/month are set otherwise it returns 1299
-        if ( $this->getCard()->getStartYear() and $this->getCard()->getStartMonth() )
+        if ( $this->getCard()->getStartYear() && $this->getCard()->getStartMonth() )
         {
             $cardDetails['StartDate'] = $this->getCard()->getStartDate('my');
         }
@@ -179,7 +179,7 @@ class AuthorizeRequest extends AbstractRequest
      *
      * @param \SimpleXMLElement $xml Response xml object
      *
-     * @return ResponseInterface
+     * @return AuthorizeResponse
      */
     protected function newResponse($xml)
     {

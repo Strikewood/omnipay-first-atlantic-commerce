@@ -11,7 +11,7 @@ trait TransactionResponseTrait
      */
     public function isSuccessful()
     {
-        return isset($this->data['CreditCardTransactionResults']['ResponseCode']) and '1' === $this->data['CreditCardTransactionResults']['ResponseCode'];
+        return isset($this->data['CreditCardTransactionResults']['ResponseCode']) && '1' === $this->data['CreditCardTransactionResults']['ResponseCode'];
     }
 
     /**

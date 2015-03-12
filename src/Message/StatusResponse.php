@@ -34,7 +34,7 @@ class StatusResponse extends AbstractResponse
      */
     public function isSuccessful()
     {
-        return isset($this->data['ResponseCode']) and '1' === $this->data['ResponseCode'];
+        return isset($this->data['ResponseCode']) && '1' === $this->data['ResponseCode'];
     }
 
     /**

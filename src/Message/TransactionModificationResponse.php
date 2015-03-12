@@ -22,7 +22,8 @@ class TransactionModificationResponse extends AbstractResponse
      */
     public function __construct(RequestInterface $request, $data)
     {
-        if ( empty($data) ) {
+        if ( empty($data) )
+        {
             throw new InvalidResponseException();
         }
 

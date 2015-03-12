@@ -18,11 +18,12 @@ abstract class AbstractResponse extends BaseAbstractResponse
     {
         $array = [];
 
-        if (!$xml instanceof SimpleXMLElement) {
+        if (!$xml instanceof SimpleXMLElement)
+        {
             $xml = new SimpleXMLElement($xml);
         }
 
-        foreach($xml->children() as $key => $child)
+        foreach ($xml->children() as $key => $child)
         {
             $value = (string) $child;
             $_children = $this->xmlDeserialize($child);

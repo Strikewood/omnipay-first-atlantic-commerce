@@ -48,7 +48,7 @@ class StatusRequest extends AbstractRequest
      *
      * @param \SimpleXMLElement $xml Response xml object
      *
-     * @return ResponseInterface
+     * @return StatusResponse
      */
     protected function newResponse($xml)
     {

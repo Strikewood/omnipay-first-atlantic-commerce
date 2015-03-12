@@ -22,7 +22,8 @@ class AuthorizeResponse extends AbstractResponse
      */
     public function __construct(RequestInterface $request, $data)
     {
-        if ( empty($data) ) {
+        if ( empty($data) )
+        {
             throw new InvalidResponseException();
         }
 
@@ -41,8 +42,8 @@ class AuthorizeResponse extends AbstractResponse
      */
     public function verifySignature()
     {
-        if ( isset($this->data['CreditCardTransactionResults']['ResponseCode']) and (
-            '1' == $this->data['CreditCardTransactionResults']['ResponseCode'] or
+        if ( isset($this->data['CreditCardTransactionResults']['ResponseCode']) && (
+            '1' == $this->data['CreditCardTransactionResults']['ResponseCode'] ||
             '2' == $this->data['CreditCardTransactionResults']['ResponseCode']) )
         {
             $signature  = $this->request->getMerchantPassword();
