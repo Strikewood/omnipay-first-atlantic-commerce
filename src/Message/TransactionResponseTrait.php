@@ -21,7 +21,7 @@ trait TransactionResponseTrait
      */
     public function getCode()
     {
-        return isset($this->data['CreditCardTransactionResults']['ReasonCode']) ? $this->data['ReasonCode'] : null;
+        return isset($this->data['CreditCardTransactionResults']['ReasonCode']) ? $this->data['CreditCardTransactionResults']['ReasonCode'] : null;
     }
 
     /**
