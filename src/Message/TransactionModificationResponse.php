@@ -28,8 +28,6 @@ class TransactionModificationResponse extends AbstractResponse
         $this->data    = $this->xmlDeserialize($data);
     }
 
-
-
     /**
      * Return whether or not the response was successful
      *
@@ -58,15 +56,5 @@ class TransactionModificationResponse extends AbstractResponse
     public function getMessage()
     {
         return isset($this->data['ReasonCodeDescription']) ? $this->data['ReasonCodeDescription'] : null;
-    }
-
-    /**
-     * Return transaction reference
-     *
-     * @return string
-     */
-    public function getTransactionReference()
-    {
-        return isset($this->data['ReferenceNumber']) ? $this->data['ReferenceNumber'] : null;
     }
 }
