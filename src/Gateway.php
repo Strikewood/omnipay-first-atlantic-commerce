@@ -117,4 +117,16 @@ class Gateway extends AbstractGateway
     {
         return $this->createRequest('\Omnipay\FirstAtlanticCommerce\Message\CreateCardRequest', $parameters);
     }
+
+    /**
+     *  Update a stored card.
+     *
+     * @param array $parameters
+     *
+     * @return \Omnipay\FirstAtlanticCommerce\Message\UpdateCardRequest
+     */
+    public function updateCard(array $parameters = [])
+    {
+        return $this->createRequest('\Omnipay\FirstAtlanticCommerce\Message\UpdateCardRequest', $parameters);
+    }
 }
