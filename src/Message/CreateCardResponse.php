@@ -48,4 +48,14 @@ class CreateCardResponse extends AbstractResponse
         return isset($this->data['ErrorMsg']) && !empty($this->data['ErrorMsg']) ? $this->data['ErrorMsg'] : null;
     }
 
+    /**
+     * Return card reference
+     *
+     * @return string
+     */
+    public function getCardReference()
+    {
+        return isset($this->data['Token']) ? $this->data['Token'] : null;
+    }
+
 }
