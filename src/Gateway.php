@@ -105,4 +105,16 @@ class Gateway extends AbstractGateway
     {
         return $this->createRequest('\Omnipay\FirstAtlanticCommerce\Message\StatusRequest', $parameters);
     }
+
+    /**
+     *  Create a stored card and return the reference token for future transactions.
+     *
+     * @param array $parameters
+     *
+     * @return \Omnipay\FirstAtlanticCommerce\Message\CreateCardRequest
+     */
+    public function createCard(array $parameters = [])
+    {
+        return $this->createRequest('\Omnipay\FirstAtlanticCommerce\Message\CreateCardRequest', $parameters);
+    }
 }
