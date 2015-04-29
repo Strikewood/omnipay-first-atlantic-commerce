@@ -30,6 +30,8 @@ This package implements the following methods:
 * ``refund($options)`` – refund an already processed (settled) transaction.
 * ``void($options)`` – reverse a previously authorized (unsettled) transaction.
 * ``status($options)`` – check the status of a previous transaction.
+* ``createCard($options)`` – create a stored card and return the reference token for future transactions.
+* ``updateCard($options)`` – update a stored card's expiry or customer reference.
 
 For general usage instructions, please see the [Omnipay documentation](http://omnipay.thephpleague.com/).
 
