@@ -137,7 +137,7 @@ class AuthorizeRequest extends AbstractRequest
     {
         $country = $this->getCard()->getCountry();
 
-        if ( !is_numeric($country) )
+        if ( !is_null($country) && !is_numeric($country) )
         {
             $iso3166 = new ISO3166;
 
