@@ -3,6 +3,7 @@
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
 use Alcohol\ISO3166;
+use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\FirstAtlanticCommerce\Message\AbstractRequest;
 
 /**
@@ -48,7 +49,42 @@ class AuthorizeRequest extends AbstractRequest
     public function getData()
     {
         $this->validate('merchantId', 'merchantPassword', 'acquirerId', 'transactionId', 'amount', 'currency', 'card');
-        $this->getCard()->validate();
+
+        // Check for AVS and require billingAddress1 and billingPostcode
+        if ( $this->getRequireAvsCheck() )
+        {
+            $this->getCard()->validate('billingAddress1', 'billingPostcode');
+        }
+
+        // Tokenized cards require the CVV and nothing else, token replaces the card number
+        if ( $this->getCardReference() )
+        {
+            $this->validate('cardReference');
+            $this->getCard()->validate('cvv', 'expiryMonth', 'expiryYear');
+
+            $cardDetails = [
+                'CardCVV2'       => $this->getCard()->getCvv(),
+                'CardExpiryDate' => $this->getCard()->getExpiryDate('my'),
+                'CardNumber'     => $this->getCardReference()
+            ];
+        }
+        else
+        {
+            $this->getCard()->validate();
+
+            $cardDetails = [
+                'CardCVV2'       => $this->getCard()->getCvv(),
+                'CardExpiryDate' => $this->getCard()->getExpiryDate('my'),
+                'CardNumber'     => $this->getCard()->getNumber(),
+                'IssueNumber'    => $this->getCard()->getIssueNumber()
+            ];
+        }
+
+        // Only pass the StartDate if year/month are set otherwise it returns 1299
+        if ( $this->getCard()->getStartYear() && $this->getCard()->getStartMonth() )
+        {
+            $cardDetails['StartDate'] = $this->getCard()->getStartDate('my');
+        }
 
         $transactionDetails = [
             'AcquirerId'       => $this->getAcquirerId(),
@@ -62,19 +98,6 @@ class AuthorizeRequest extends AbstractRequest
             'SignatureMethod'  => 'SHA1',
             'TransactionCode'  => $this->getTransactionCode()
         ];
-
-        $cardDetails = [
-            'CardCVV2'       => $this->getCard()->getCvv(),
-            'CardExpiryDate' => $this->getCard()->getExpiryDate('my'),
-            'CardNumber'     => $this->getCard()->getNumber(),
-            'IssueNumber'    => $this->getCard()->getIssueNumber()
-        ];
-
-        // Only pass the StartDate if year/month are set otherwise it returns 1299
-        if ( $this->getCard()->getStartYear() && $this->getCard()->getStartMonth() )
-        {
-            $cardDetails['StartDate'] = $this->getCard()->getStartDate('my');
-        }
 
         $billingDetails = [
             'BillToAddress'     => $this->getCard()->getAddress1(),
@@ -114,7 +137,7 @@ class AuthorizeRequest extends AbstractRequest
     {
         $country = $this->getCard()->getCountry();
 
-        if ( !is_numeric($country) )
+        if ( !is_null($country) && !is_numeric($country) )
         {
             $iso3166 = new ISO3166;
 
