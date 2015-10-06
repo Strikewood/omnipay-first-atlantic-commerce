@@ -101,7 +101,7 @@ class AuthorizeRequest extends AbstractRequest
 
         $billingDetails = [
             'BillToAddress'     => $this->getCard()->getAddress1(),
-            'BillToZipPostCode' => $this->getCard()->getPostcode(),
+            'BillToZipPostCode' => $this->formatPostcode(),
             'BillToFirstName'   => $this->getCard()->getFirstName(),
             'BillToLastName'    => $this->getCard()->getLastName(),
             'BillToCity'        => $this->getCard()->getCity(),
@@ -114,7 +114,7 @@ class AuthorizeRequest extends AbstractRequest
         // FAC only accepts two digit state abbreviations from the USA
         if ( $billingDetails['BillToCountry'] == 840 )
         {
-            $billingDetails['BillToState'] = $this->getState();
+            $billingDetails['BillToState'] = $this->formatState();
         }
 
         $data = [
@@ -165,7 +165,7 @@ class AuthorizeRequest extends AbstractRequest
      *
      * @return string State abbreviation
      */
-    public function getState()
+    public function formatState()
     {
         $state = $this->getCard()->getState();
 
@@ -175,6 +175,26 @@ class AuthorizeRequest extends AbstractRequest
         }
 
         return $state;
+    }
+
+    /**
+     * Returns the postal code sanitizing dashes and spaces and throws exceptions with other
+     * non-alphanumeric characters
+     *
+     * @throws Omnipay\Common\Exception\InvalidRequestException
+     *
+     * @return string Postal code
+     */
+    public function formatPostcode()
+    {
+        $postal = preg_replace( '/[\s\-]/', '', $this->getCard()->getPostcode() );
+
+        if ( preg_match('/[^a-z0-9]/i', $postal) )
+        {
+            throw new InvalidRequestException("The postal code must be alpha-numeric.");
+        }
+
+        return $postal;
     }
 
     /**
