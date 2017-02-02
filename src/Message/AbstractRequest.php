@@ -3,6 +3,7 @@
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
 use Omnipay\Common\Message\AbstractRequest as BaseAbstractRequest;
+use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\FirstAtlanticCommerce\CreditCard;
 use Omnipay\FirstAtlanticCommerce\ParameterTrait;
 use SimpleXMLElement;
@@ -132,7 +133,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
      *
      * @param CreditCard $value
      *
-     * @return AbstractRequest Provides a fluent interface
+     * @return \Omnipay\Common\Message\AbstractRequest Provides a fluent interface
      */
     public function setCard($value)
     {
@@ -142,5 +143,15 @@ abstract class AbstractRequest extends BaseAbstractRequest
         }
 
         return $this->setParameter('card', $value);
+    }
+
+    /**
+     * Get the card.
+     *
+     * @return CreditCard
+     */
+    public function getCard()
+    {
+        return $this->getParameter('card');
     }
 }
