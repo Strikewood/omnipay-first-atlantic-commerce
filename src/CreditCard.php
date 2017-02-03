@@ -88,11 +88,11 @@ class CreditCard extends BaseCreditCard
 
             if ( strlen($country) == 2 )
             {
-                $country = $iso3166->alpha2($country)['numeric'];
+                $country = $iso3166->getByAlpha2($country)['numeric'];
             }
             elseif ( strlen($country) == 3 )
             {
-                $country = $iso3166->alpha3($country)['numeric'];
+                $country = $iso3166->getByAlpha3($country)['numeric'];
             }
             else
             {
