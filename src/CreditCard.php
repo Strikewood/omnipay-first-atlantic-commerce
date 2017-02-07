@@ -2,8 +2,12 @@
 
 namespace Omnipay\FirstAtlanticCommerce;
 
+use League\ISO3166\ISO3166;
 use Omnipay\Common\CreditCard as BaseCreditCard;
 use Omnipay\Common\Exception\InvalidCreditCardException;
+use Omnipay\Common\Exception\InvalidRequestException;
+use Omnipay\Common\Helper;
+
 
 class CreditCard extends BaseCreditCard
 {
@@ -65,5 +69,37 @@ class CreditCard extends BaseCreditCard
                 throw new InvalidCreditCardException('Card CVV should have 3 to 4 digits');
             }
         }
+    }
+
+    /**
+     * Returns the country as the numeric ISO 3166-1 code
+     *
+     * @throws InvalidRequestException
+     *
+     * @return int ISO 3166-1 numeric country
+     */
+    public function getNumericCountry()
+    {
+        $country = $this->getCountry();
+
+        if ( !is_null($country) && !is_numeric($country) )
+        {
+            $iso3166 = new ISO3166();
+
+            if ( strlen($country) == 2 )
+            {
+                $country = $iso3166->getByAlpha2($country)['numeric'];
+            }
+            elseif ( strlen($country) == 3 )
+            {
+                $country = $iso3166->getByAlpha3($country)['numeric'];
+            }
+            else
+            {
+                throw new InvalidRequestException("The country parameter must be ISO 3166-1 numeric, aplha2 or alpha3.");
+            }
+        }
+
+        return $country;
     }
 }

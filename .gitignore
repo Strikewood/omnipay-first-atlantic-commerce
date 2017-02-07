@@ -46,3 +46,6 @@ bin
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# phpstorm
+.idea

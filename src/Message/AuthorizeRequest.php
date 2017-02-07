@@ -2,9 +2,7 @@
 
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
-use Alcohol\ISO3166;
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\FirstAtlanticCommerce\Message\AbstractRequest;
 
 /**
  * FACPG2 Authorize Request
@@ -105,7 +103,7 @@ class AuthorizeRequest extends AbstractRequest
             'BillToFirstName'   => $this->getCard()->getFirstName(),
             'BillToLastName'    => $this->getCard()->getLastName(),
             'BillToCity'        => $this->getCard()->getCity(),
-            'BillToCountry'     => $this->formatCountry(),
+            'BillToCountry'     => $this->getCard()->getNumericCountry(),
             'BillToEmail'       => $this->getCard()->getEmail(),
             'BillToTelephone'   => $this->getCard()->getPhone(),
             'BillToFax'         => $this->getCard()->getFax()
@@ -127,41 +125,9 @@ class AuthorizeRequest extends AbstractRequest
     }
 
     /**
-     * Returns the country as the numeric ISO 3166-1 code
-     *
-     * @throws Omnipay\Common\Exception\InvalidRequestException
-     *
-     * @return int ISO 3166-1 numeric country
-     */
-    protected function formatCountry()
-    {
-        $country = $this->getCard()->getCountry();
-
-        if ( !is_null($country) && !is_numeric($country) )
-        {
-            $iso3166 = new ISO3166;
-
-            if ( strlen($country) == 2 )
-            {
-                $country = $iso3166->getByAlpha2($country)['numeric'];
-            }
-            elseif ( strlen($country) == 3 )
-            {
-                $country = $iso3166->getByAlpha3($country)['numeric'];
-            }
-            else
-            {
-                throw new InvalidRequestException("The country parameter must be ISO 3166-1 numeric, aplha2 or alpha3.");
-            }
-        }
-
-        return $country;
-    }
-
-    /**
      * Returns the billing state if its a US abbreviation or throws an exception
      *
-     * @throws Omnipay\Common\Exception\InvalidRequestException
+     * @throws InvalidRequestException
      *
      * @return string State abbreviation
      */
@@ -181,7 +147,7 @@ class AuthorizeRequest extends AbstractRequest
      * Returns the postal code sanitizing dashes and spaces and throws exceptions with other
      * non-alphanumeric characters
      *
-     * @throws Omnipay\Common\Exception\InvalidRequestException
+     * @throws InvalidRequestException
      *
      * @return string Postal code
      */
