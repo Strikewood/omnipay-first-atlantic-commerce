@@ -12,6 +12,8 @@ class AuthorizeTest extends GatewayTestCase
     /** @var  Gateway */
     protected $gateway;
 
+    private $purchaseOptions;
+
     /**
      * Setup the gateway to be used for testing.
      */
@@ -22,6 +24,13 @@ class AuthorizeTest extends GatewayTestCase
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
         $this->gateway->setMerchantId('123');
         $this->gateway->setMerchantPassword('abc123');
+
+        $this->purchaseOptions = [
+            'amount'        => '10.00',
+            'currency'      => 'USD',
+            'transactionId' => '1234',
+            'card'          => $this->getValidCard()
+        ];
     }
 
     /**
@@ -46,20 +55,94 @@ class AuthorizeTest extends GatewayTestCase
     }
 
     /**
+     * Test the format state functionality with a good state
+     */
+    public function testFormatState()
+    {
+        $requestData = $this->getRequestData($this->getValidCard());
+        $this->assertEquals('CA', $requestData['BillingDetails']['BillToState']);
+    }
+
+    /**
+     * Test the format state functionality with a bad state
+     *
+     * @expectedException \Omnipay\Common\Exception\InvalidRequestException
+     */
+    public function testBadState()
+    {
+        $card = $this->getValidCard();
+        $card['billingState'] = 'California';
+        $this->getRequestData($card);
+    }
+
+    /**
+     * Test the format postal code functionality with a good code
+     */
+    public function testFormatPostCode()
+    {
+        $card = $this->getValidCard();
+        $requestData = $this->getRequestData($card);
+        $this->assertEquals('12345', $requestData['BillingDetails']['BillToZipPostCode']);
+
+        $card['billingPostcode'] = '1 2-345';
+        $requestData = $this->getRequestData($card);
+        $this->assertEquals('12345', $requestData['BillingDetails']['BillToZipPostCode']);
+    }
+
+
+    /**
+     * Test the format postal code functionality with a bad code
+     *
+     * @expectedException \Omnipay\Common\Exception\InvalidRequestException
+     */
+    public function testBadPostCode()
+    {
+        $card = $this->getValidCard();
+        $card['billingPostcode'] = '123#%';
+        $this->getRequestData($card);
+    }
+
+    /**
      * @param $card
      *
      * @return array
      */
     private function getRequestData($card)
     {
-        $request = $this->gateway->authorize([
-            'amount' => '10.00',
-            'currency' => 'USD',
-            'transactionId' => uniqid(),
-            'card' => $card
-        ]);
+        $purchaseOptions = $this->purchaseOptions;
+        $purchaseOptions['card'] = $card;
+        $request = $this->gateway->authorize($purchaseOptions);
         $requestData = $request->getData();
         return $requestData;
     }
 
+    /**
+     * Test a successful authorization
+     */
+    public function testAuthorizeSuccess()
+    {
+        $this->setMockHttpResponse('AuthorizeSuccess.txt');
+
+        $response = $this->gateway->authorize($this->purchaseOptions)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals(1, $response->getCode());
+        $this->assertEquals('Transaction is approved.', $response->getMessage());
+        $this->assertEquals(307916543749, $response->getTransactionReference());
+    }
+
+    /**
+     * Test a failed Authorization
+     */
+    public function testAuthorizeFailure()
+    {
+        $this->setMockHttpResponse('AuthorizeFailure.txt');
+
+        $response = $this->gateway->authorize($this->purchaseOptions)->send();
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertEquals(2, $response->getCode());
+        $this->assertEquals('Transaction is declined.', $response->getMessage());
+        $this->assertEquals(307916543749, $response->getTransactionReference());
+    }
 }
