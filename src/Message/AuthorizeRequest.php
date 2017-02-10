@@ -99,7 +99,7 @@ class AuthorizeRequest extends AbstractRequest
 
         $billingDetails = [
             'BillToAddress'     => $this->getCard()->getAddress1(),
-            'BillToZipPostCode' => $this->formatPostcode(),
+            'BillToZipPostCode' => $this->getCard()->formatPostcode(),
             'BillToFirstName'   => $this->getCard()->getFirstName(),
             'BillToLastName'    => $this->getCard()->getLastName(),
             'BillToCity'        => $this->getCard()->getCity(),
@@ -112,7 +112,7 @@ class AuthorizeRequest extends AbstractRequest
         // FAC only accepts two digit state abbreviations from the USA
         if ( $billingDetails['BillToCountry'] == 840 )
         {
-            $billingDetails['BillToState'] = $this->formatState();
+            $billingDetails['BillToState'] = $this->getCard()->validateState();
         }
 
         $data = [
@@ -122,45 +122,6 @@ class AuthorizeRequest extends AbstractRequest
         ];
 
         return $data;
-    }
-
-    /**
-     * Returns the billing state if its a US abbreviation or throws an exception
-     *
-     * @throws InvalidRequestException
-     *
-     * @return string State abbreviation
-     */
-    public function formatState()
-    {
-        $state = $this->getCard()->getState();
-
-        if ( strlen($state) != 2 )
-        {
-            throw new InvalidRequestException("The state must be a two character abbreviation.");
-        }
-
-        return $state;
-    }
-
-    /**
-     * Returns the postal code sanitizing dashes and spaces and throws exceptions with other
-     * non-alphanumeric characters
-     *
-     * @throws InvalidRequestException
-     *
-     * @return string Postal code
-     */
-    public function formatPostcode()
-    {
-        $postal = preg_replace( '/[\s\-]/', '', $this->getCard()->getPostcode() );
-
-        if ( preg_match('/[^a-z0-9]/i', $postal) )
-        {
-            throw new InvalidRequestException("The postal code must be alpha-numeric.");
-        }
-
-        return $postal;
     }
 
     /**

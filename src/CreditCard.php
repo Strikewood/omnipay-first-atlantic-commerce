@@ -102,4 +102,44 @@ class CreditCard extends BaseCreditCard
 
         return $country;
     }
+
+    /**
+     * Returns the billing state if its a US abbreviation or throws an exception
+     *
+     * @throws InvalidRequestException
+     *
+     * @return string State abbreviation
+     */
+    public function validateState()
+    {
+        $state = $this->getState();
+
+        if ( strlen($state) != 2 )
+        {
+            throw new InvalidRequestException("The state must be a two character abbreviation.");
+        }
+
+        return $state;
+    }
+
+    /**
+     * Returns the postal code sanitizing dashes and spaces and throws exceptions with other
+     * non-alphanumeric characters
+     *
+     * @throws InvalidRequestException
+     *
+     * @return string Postal code
+     */
+    public function formatPostcode()
+    {
+        $postal = preg_replace( '/[\s\-]/', '', $this->getPostcode() );
+
+        if ( preg_match('/[^a-z0-9]/i', $postal) )
+        {
+            throw new InvalidRequestException("The postal code must be alpha-numeric.");
+        }
+
+        return $postal;
+    }
+
 }
