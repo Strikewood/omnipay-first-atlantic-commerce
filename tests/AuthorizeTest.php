@@ -145,4 +145,36 @@ class AuthorizeTest extends GatewayTestCase
         $this->assertEquals('Transaction is declined.', $response->getMessage());
         $this->assertEquals(307916543749, $response->getTransactionReference());
     }
+
+    /**
+     * Test a successful purchase. Purchases act the same as authorizations. They just have a different transaction code.
+     * So the tests are basically the same.
+     */
+    public function testPurchaseSuccess()
+    {
+        $this->setMockHttpResponse('AuthorizeSuccess.txt');
+
+        $response = $this->gateway->purchase($this->purchaseOptions)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals(1, $response->getCode());
+        $this->assertEquals('Transaction is approved.', $response->getMessage());
+        $this->assertEquals(307916543749, $response->getTransactionReference());
+    }
+
+    /**
+     * Test a failed purchase. Purchases act the same as authorizations. They just have a different transaction code.
+     * So the tests are basically the same.
+     */
+    public function testPurchaseFailure()
+    {
+        $this->setMockHttpResponse('AuthorizeFailure.txt');
+
+        $response = $this->gateway->purchase($this->purchaseOptions)->send();
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertEquals(2, $response->getCode());
+        $this->assertEquals('Transaction is declined.', $response->getMessage());
+        $this->assertEquals(307916543749, $response->getTransactionReference());
+    }
 }
