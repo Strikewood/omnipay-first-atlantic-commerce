@@ -6,6 +6,13 @@ namespace tests;
 use Omnipay\FirstAtlanticCommerce\Gateway;
 use Omnipay\Tests\GatewayTestCase;
 
+/**
+ * Class AuthorizeTest
+ *
+ * Test the Authorize and Purchase requests and other supporting functions for those requests.
+ *
+ * @package tests
+ */
 class AuthorizeTest extends GatewayTestCase
 {
 
@@ -15,7 +22,7 @@ class AuthorizeTest extends GatewayTestCase
     private $purchaseOptions;
 
     /**
-     * Setup the gateway to be used for testing.
+     * Setup the gateway and the purchase options to be used for testing.
      */
     public function setUp()
     {

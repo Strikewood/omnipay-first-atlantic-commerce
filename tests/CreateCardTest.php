@@ -7,6 +7,13 @@ use Omnipay\FirstAtlanticCommerce\Gateway;
 use Omnipay\FirstAtlanticCommerce\Message\CreateCardResponse;
 use Omnipay\Tests\GatewayTestCase;
 
+/**
+ * Class CreateCardTest
+ *
+ * Test the creation of a stored card with FAC
+ *
+ * @package tests
+ */
 class CreateCardTest extends GatewayTestCase
 {
 
@@ -15,6 +22,9 @@ class CreateCardTest extends GatewayTestCase
     /** @var  array */
     private $cardOptions;
 
+    /**
+     * Setup the gateway and card options for testing.
+     */
     public function setUp()
     {
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
@@ -28,6 +38,9 @@ class CreateCardTest extends GatewayTestCase
         ];
     }
 
+    /**
+     * Test the successful creation of a credit card
+     */
     public function testSuccessfulCardCreation()
     {
         $this->setMockHttpResponse('CreateCardSuccess.txt');
@@ -40,6 +53,9 @@ class CreateCardTest extends GatewayTestCase
         $this->assertEquals('411111_000011111', $response->getCardReference());
     }
 
+    /**
+     * Test the failed creation of a credit card
+     */
     public function testFailedCardCreation()
     {
         $this->setMockHttpResponse('CreateCardFailure.txt');

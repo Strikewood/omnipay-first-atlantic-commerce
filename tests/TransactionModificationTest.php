@@ -5,13 +5,23 @@ namespace tests;
 use Omnipay\FirstAtlanticCommerce\Gateway;
 use Omnipay\Tests\GatewayTestCase;
 
+/**
+ * Class TransactionModificationTest
+ *
+ * Tests of the transaction modification procedures in FAC.
+ *
+ * @package tests
+ */
 class TransactionModificationTest extends GatewayTestCase
 {
     /** @var  Gateway */
     protected $gateway;
-
+    /** @var  array */
     private $options;
 
+    /**
+     * Setup the gateway and options for testing.
+     */
     public function setUp()
     {
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
@@ -25,6 +35,9 @@ class TransactionModificationTest extends GatewayTestCase
         ];
     }
 
+    /**
+     * Test a successful capture.
+     */
     public function testSuccessfulCapture()
     {
         $this->setMockHttpResponse('ModificationSuccess.txt');
@@ -36,6 +49,9 @@ class TransactionModificationTest extends GatewayTestCase
         $this->assertEquals('Success', $response->getMessage());
     }
 
+    /**
+     * Test a failed capture.
+     */
     public function testFailedCapture()
     {
         $this->setMockHttpResponse('ModificationFailed.txt');
@@ -47,6 +63,9 @@ class TransactionModificationTest extends GatewayTestCase
         $this->assertEquals('Failed', $response->getMessage());
     }
 
+    /**
+     * Test a successful refund.
+     */
     public function testSuccessfulRefund()
     {
         $this->setMockHttpResponse('ModificationSuccess.txt');
@@ -58,6 +77,9 @@ class TransactionModificationTest extends GatewayTestCase
         $this->assertEquals('Success', $response->getMessage());
     }
 
+    /**
+     * Test a failed refund.
+     */
     public function testFailedRefund()
     {
         $this->setMockHttpResponse('ModificationFailed.txt');
@@ -69,6 +91,9 @@ class TransactionModificationTest extends GatewayTestCase
         $this->assertEquals('Failed', $response->getMessage());
     }
 
+    /**
+     * Test a successful Void.
+     */
     public function testSuccessfulVoid()
     {
         $this->setMockHttpResponse('ModificationSuccess.txt');
@@ -80,6 +105,9 @@ class TransactionModificationTest extends GatewayTestCase
         $this->assertEquals('Success', $response->getMessage());
     }
 
+    /**
+     * Test a failed Void.
+     */
     public function testFailedVoid()
     {
         $this->setMockHttpResponse('ModificationFailed.txt');

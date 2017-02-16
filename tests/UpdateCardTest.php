@@ -7,6 +7,13 @@ use Omnipay\FirstAtlanticCommerce\Gateway;
 use Omnipay\FirstAtlanticCommerce\Message\UpdateCardResponse;
 use Omnipay\Tests\GatewayTestCase;
 
+/**
+ * Class UpdateCardTest
+ *
+ * Tests for the request to update stored cards at FAC
+ *
+ * @package tests
+ */
 class UpdateCardTest extends GatewayTestCase
 {
 
@@ -15,6 +22,9 @@ class UpdateCardTest extends GatewayTestCase
     /** @var  array */
     private $updateOptions;
 
+    /**
+     * Setup the gateway and the update options for the tests.
+     */
     public function setUp()
     {
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
@@ -29,6 +39,9 @@ class UpdateCardTest extends GatewayTestCase
         ];
     }
 
+    /**
+     * Test a successful update.
+     */
     public function testSuccessfulCardUpdate()
     {
         $this->setMockHttpResponse('UpdateCardSuccess.txt');
@@ -41,6 +54,9 @@ class UpdateCardTest extends GatewayTestCase
         $this->assertEquals('411111_000011111', $response->getCardReference());
     }
 
+    /**
+     * Test a failed update.
+     */
     public function testFailedCardUpdate()
     {
         $this->setMockHttpResponse('UpdateCardFailure.txt');

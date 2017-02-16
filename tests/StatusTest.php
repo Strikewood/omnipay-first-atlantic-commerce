@@ -6,6 +6,13 @@ namespace tests;
 use Omnipay\FirstAtlanticCommerce\Gateway;
 use Omnipay\Tests\GatewayTestCase;
 
+/**
+ * Class StatusTest
+ *
+ * Test the request to get the status of a transaction.
+ *
+ * @package tests
+ */
 class StatusTest extends GatewayTestCase
 {
     /** @var  Gateway */
@@ -13,6 +20,9 @@ class StatusTest extends GatewayTestCase
     /** @var  array */
     private $statusOptions;
 
+    /**
+     * Setup the gateway and status options for testing.
+     */
     public function setUp()
     {
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
@@ -25,6 +35,9 @@ class StatusTest extends GatewayTestCase
         ];
     }
 
+    /**
+     * Test a successful status check.
+     */
     public function testSuccessfulStatus()
     {
         $this->setMockHttpResponse('StatusSuccess.txt');
@@ -36,6 +49,9 @@ class StatusTest extends GatewayTestCase
         $this->assertEquals('1234', $response->getTransactionReference());
     }
 
+    /**
+     * Test a failed status check.
+     */
     public function testFailedStatus()
     {
         $this->setMockHttpResponse('StatusFailure.txt');
