@@ -2,12 +2,12 @@
 
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
-use Omnipay\FirstAtlanticCommerce\Message\AbstractRequest;
+use Omnipay\Common\Message\ResponseInterface;
 
 /**
  * FACPG2 Transaction Modification Request
  */
-class TransactionModificationRequest extends AbstractRequest
+abstract class AbstractTransactionModificationRequest extends AbstractRequest
 {
     /**
      * @var string;
