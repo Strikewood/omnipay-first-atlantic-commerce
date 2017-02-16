@@ -34,7 +34,7 @@ class StatusResponse extends AbstractResponse
      */
     public function isSuccessful()
     {
-        return isset($this->data['ResponseCode']) && '1' === $this->data['ResponseCode'];
+        return isset($this->data['CreditCardTransactionResults']['ResponseCode']) && '1' === $this->data['CreditCardTransactionResults']['ResponseCode'];
     }
 
     /**
@@ -44,7 +44,7 @@ class StatusResponse extends AbstractResponse
      */
     public function getMessage()
     {
-        return isset($this->data['ReasonCodeDescription']) ? $this->data['ReasonCodeDescription'] : null;
+        return isset($this->data['CreditCardTransactionResults']['ReasonCodeDescription']) ? $this->data['CreditCardTransactionResults']['ReasonCodeDescription'] : null;
     }
 
     /**
@@ -54,6 +54,6 @@ class StatusResponse extends AbstractResponse
      */
     public function getTransactionReference()
     {
-        return isset($this->data['ReferenceNumber']) ? $this->data['ReferenceNumber'] : null;
+        return isset($this->data['CreditCardTransactionResults']['ReferenceNumber']) ? $this->data['CreditCardTransactionResults']['ReferenceNumber'] : null;
     }
 }
