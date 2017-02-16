@@ -10,7 +10,7 @@ abstract class AbstractResponse extends BaseAbstractResponse
     /**
      * Seserializes XML to an array
      *
-     * @param \SimpleXMLElement $xml SimpleXMLElement object.
+     * @param \SimpleXMLElement|string $xml SimpleXMLElement object or a well formed xml string.
      *
      * @return array data
      */

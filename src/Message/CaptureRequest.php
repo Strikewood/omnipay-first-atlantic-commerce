@@ -2,12 +2,10 @@
 
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
-use Omnipay\FirstAtlanticCommerce\Message\TransactionModificationRequest;
-
 /**
  * FACPG2 Capture Request
  */
-class CaptureRequest extends TransactionModificationRequest
+class CaptureRequest extends AbstractTransactionModificationRequest
 {
     /**
      * Flag as a capture

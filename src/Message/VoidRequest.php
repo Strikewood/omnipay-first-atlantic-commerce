@@ -2,12 +2,10 @@
 
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
-use Omnipay\FirstAtlanticCommerce\Message\TransactionModificationRequest;
-
 /**
  * FACPG2 Reversal Request
  */
-class VoidRequest extends TransactionModificationRequest
+class VoidRequest extends AbstractTransactionModificationRequest
 {
     /**
      * Flag as a reversal

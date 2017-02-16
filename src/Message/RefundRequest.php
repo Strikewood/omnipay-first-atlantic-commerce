@@ -2,12 +2,11 @@
 
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
-use Omnipay\FirstAtlanticCommerce\Message\TransactionModificationRequest;
 
 /**
  * FACPG2 Refund Request
  */
-class RefundRequest extends TransactionModificationRequest
+class RefundRequest extends AbstractTransactionModificationRequest
 {
     /**
      * Flag as a refund

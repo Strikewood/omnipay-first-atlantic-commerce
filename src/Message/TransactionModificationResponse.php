@@ -4,7 +4,6 @@ namespace Omnipay\FirstAtlanticCommerce\Message;
 
 use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\RequestInterface;
-use Omnipay\FirstAtlanticCommerce\Message\AbstractResponse;
 
 /**
  * FACPG2 Transaction Modification Response
@@ -16,6 +15,8 @@ class TransactionModificationResponse extends AbstractResponse
      *
      * @param RequestInterface $request
      * @param string $data
+     *
+     * @throws InvalidResponseException
      */
     public function __construct(RequestInterface $request, $data)
     {
