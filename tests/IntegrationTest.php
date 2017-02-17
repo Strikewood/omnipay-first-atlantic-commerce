@@ -4,6 +4,7 @@ namespace tests;
 
 
 use Omnipay\FirstAtlanticCommerce\Gateway;
+use Omnipay\FirstAtlanticCommerce\Message\AuthorizeResponse;
 use Omnipay\FirstAtlanticCommerce\Message\CreateCardResponse;
 use Omnipay\FirstAtlanticCommerce\Message\UpdateCardResponse;
 use Omnipay\Tests\GatewayTestCase;
@@ -170,5 +171,22 @@ class IntegrationTest extends GatewayTestCase
 
         $this->assertTrue($statusResponse->isSuccessful());
         $this->assertEquals('Transaction is approved.', $statusResponse->getMessage());
+    }
+
+    public function testAuthorizeWithCreateCard()
+    {
+        $transactionId = uniqid();
+        /** @var AuthorizeResponse $authorizeResponse */
+        $authorizeResponse = $this->gateway->authorize([
+            'amount' => '30.00',
+            'currency' => 'USD',
+            'transactionId' => $transactionId,
+            'card' => $this->getValidCard(),
+            'createCard' => true
+        ])->send();
+
+        $this->assertTrue($authorizeResponse->isSuccessful());
+        $this->assertNotEmpty($authorizeResponse->getCardReference());
+        echo $authorizeResponse->getCardReference();
     }
 }

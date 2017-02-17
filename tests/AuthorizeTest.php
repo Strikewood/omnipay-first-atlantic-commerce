@@ -4,6 +4,7 @@ namespace tests;
 
 
 use Omnipay\FirstAtlanticCommerce\Gateway;
+use Omnipay\FirstAtlanticCommerce\Message\AuthorizeResponse;
 use Omnipay\Tests\GatewayTestCase;
 
 /**
@@ -183,5 +184,16 @@ class AuthorizeTest extends GatewayTestCase
         $this->assertEquals(2, $response->getCode());
         $this->assertEquals('Transaction is declined.', $response->getMessage());
         $this->assertEquals(307916543749, $response->getTransactionReference());
+    }
+
+    public function testAuthorizeWithTokenization()
+    {
+        $this->setMockHttpResponse('AuthorizeToken.txt');
+
+        /** @var AuthorizeResponse $response */
+        $response = $this->gateway->authorize($this->purchaseOptions)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertNotEmpty($response->getCardReference());
     }
 }

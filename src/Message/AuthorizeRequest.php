@@ -141,7 +141,14 @@ class AuthorizeRequest extends AbstractRequest
      */
     protected function getTransactionCode()
     {
-        return $this->getRequireAvsCheck() ? $this->transactionCode + 1 : $this->transactionCode;
+        $transactionCode = $this->transactionCode;
+        if($this->getRequireAvsCheck()) {
+            $transactionCode += 1;
+        }
+        if($this->getCreateCard()) {
+            $transactionCode += 128;
+        }
+        return $transactionCode;
     }
 
     /**
@@ -154,5 +161,23 @@ class AuthorizeRequest extends AbstractRequest
     protected function newResponse($xml)
     {
         return new AuthorizeResponse($this, $xml);
+    }
+
+    /**
+     * @param boolean $value Create a tokenized card on FAC during an authorize request
+     *
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function setCreateCard($value)
+    {
+        return $this->setParameter('createCard', $value);
+    }
+
+    /**
+     * @return boolean Create a tokenized card on FAC during an authorize request
+     */
+    public function getCreateCard()
+    {
+        return $this->getParameter('createCard');
     }
 }

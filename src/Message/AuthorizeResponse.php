@@ -95,4 +95,14 @@ class AuthorizeResponse extends AbstractResponse
     {
         return isset($this->data['CreditCardTransactionResults']['ReferenceNumber']) ? $this->data['CreditCardTransactionResults']['ReferenceNumber'] : null;
     }
+
+    /**
+     * If the createCard parameter is set to true on the authorize request this will return the token
+     *
+     * @return string|null
+     */
+    public function getCardReference()
+    {
+        return isset($this->data['CreditCardTransactionResults']['TokenizedPAN']) ? $this->data['CreditCardTransactionResults']['TokenizedPAN'] : null;
+    }
 }
