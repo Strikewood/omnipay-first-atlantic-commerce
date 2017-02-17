@@ -124,6 +124,9 @@ class IntegrationTest extends GatewayTestCase
         $this->assertTrue($refundResponse->isSuccessful(), 'Purchase refund should succeed');
     }
 
+    /**
+     * Test the creation and update of a card through FAC
+     */
     public function testCreateUpdateCard()
     {
         /** @var CreateCardResponse $createResponse */
@@ -146,6 +149,9 @@ class IntegrationTest extends GatewayTestCase
         $this->assertNotEmpty($updateResponse->getCardReference());
     }
 
+    /**
+     * Test the status request through FAC
+     */
     public function testStatus()
     {
         $transactionId = uniqid();
