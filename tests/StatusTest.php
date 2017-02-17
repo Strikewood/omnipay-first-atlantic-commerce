@@ -46,7 +46,6 @@ class StatusTest extends GatewayTestCase
 
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals('Transaction is approved.', $response->getMessage());
-        $this->assertEquals('1234', $response->getTransactionReference());
     }
 
     /**
@@ -60,6 +59,5 @@ class StatusTest extends GatewayTestCase
 
         $this->assertFalse($response->isSuccessful());
         $this->assertEquals('No Response', $response->getMessage());
-        $this->assertEquals('1234', $response->getTransactionReference());
     }
 }

@@ -4,6 +4,8 @@ namespace tests;
 
 
 use Omnipay\FirstAtlanticCommerce\Gateway;
+use Omnipay\FirstAtlanticCommerce\Message\CreateCardResponse;
+use Omnipay\FirstAtlanticCommerce\Message\UpdateCardResponse;
 use Omnipay\Tests\GatewayTestCase;
 
 /**
@@ -35,9 +37,10 @@ class IntegrationTest extends GatewayTestCase
     {
         $merchantId = '';
         $merchantPassword = '';
+        $credentialsFilePath = dirname(__FILE__) . '/myCredentials.json';
 
-        if(file_exists('myCredentials.json')) {
-            $credentialsJson = file_get_contents('myCredentials.json');
+        if(file_exists($credentialsFilePath)) {
+            $credentialsJson = file_get_contents($credentialsFilePath);
             if($credentialsJson) {
                 $credentials = json_decode($credentialsJson);
                 $merchantId = $credentials->merchantId;
@@ -119,5 +122,47 @@ class IntegrationTest extends GatewayTestCase
         ])->send();
 
         $this->assertTrue($refundResponse->isSuccessful(), 'Purchase refund should succeed');
+    }
+
+    public function testCreateUpdateCard()
+    {
+        /** @var CreateCardResponse $createResponse */
+        $createResponse = $this->gateway->createCard([
+            'customerReference' => 'John Doe',
+            'card' => $this->getValidCard()
+        ])->send();
+
+        $this->assertTrue($createResponse->isSuccessful(), 'Card Creation should have worked');
+        $this->assertNotEmpty($createResponse->getCardReference());
+
+        /** @var UpdateCardResponse $updateResponse */
+        $updateResponse = $this->gateway->updateCard([
+            'customerReference' => 'Jane Doe',
+            'cardReference' => $createResponse->getCardReference(),
+            'card' => $this->getValidCard()
+        ])->send();
+
+        $this->assertTrue($updateResponse->isSuccessful());
+        $this->assertNotEmpty($updateResponse->getCardReference());
+    }
+
+    public function testStatus()
+    {
+        $transactionId = uniqid();
+        $authorizeResponse = $this->gateway->authorize([
+            'amount' => '30.00',
+            'currency' => 'USD',
+            'transactionId' => $transactionId,
+            'card' => $this->getValidCard()
+        ])->send();
+
+        $this->assertTrue($authorizeResponse->isSuccessful());
+
+        $statusResponse = $this->gateway->status([
+            'transactionId' => $transactionId
+        ])->send();
+
+        $this->assertTrue($statusResponse->isSuccessful());
+        $this->assertEquals('Transaction is approved.', $statusResponse->getMessage());
     }
 }
