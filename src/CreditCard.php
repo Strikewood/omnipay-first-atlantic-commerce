@@ -28,7 +28,7 @@ class CreditCard extends BaseCreditCard
 
         if ( count($parameters) == 0 )
         {
-            $parameters = ['number', 'cvv', 'expiryMonth', 'expiryYear'];
+            $parameters = ['number', 'expiryMonth', 'expiryYear'];
         }
 
         foreach ($parameters as $key)
@@ -62,13 +62,6 @@ class CreditCard extends BaseCreditCard
             }
         }
 
-        if ( isset($parameters['cvv']) )
-        {
-            if ( !is_null( $this->getCvv() ) && !preg_match( '/^\d{3,4}$/i', $this->getCvv() ) )
-            {
-                throw new InvalidCreditCardException('Card CVV should have 3 to 4 digits');
-            }
-        }
     }
 
     /**
