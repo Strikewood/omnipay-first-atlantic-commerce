@@ -6,6 +6,11 @@ use Omnipay\FirstAtlanticCommerce\Message\AbstractRequest;
 
 /**
  * FACPG2 Update Token Request
+ *
+ * Required Parameters:
+ * customerReference - The name of the customer
+ * cardReference - This is the token created by FAC for the card being updated
+ * card - Instantiation of the Omnipay\FirstAtlanticCommerce\CreditCard class
  */
 class UpdateCardRequest extends AbstractRequest
 {

@@ -36,6 +36,7 @@ This package implements the following methods:
 * ``updateCard($options)`` – update a stored card's expiry or customer reference.
 
 For general usage instructions, please see the [Omnipay documentation](http://omnipay.thephpleague.com/).
+For information on the parameters needed for each request, see the class documentation for that request in the Message folder.
 
 ### Basic Example
 

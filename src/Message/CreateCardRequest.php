@@ -2,10 +2,14 @@
 
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
-use Omnipay\FirstAtlanticCommerce\Message\AbstractRequest;
 
 /**
  * FACPG2 Tokenize Request
+ *
+ * Required Parameters:
+ * customerReference - name of the customer using the card
+ * card - Instantiation of Omnipay\FirstAtlanticCommerce\CreditCard()
+ *
  */
 class CreateCardRequest extends AbstractRequest
 {

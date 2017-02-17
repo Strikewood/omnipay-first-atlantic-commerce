@@ -187,6 +187,5 @@ class IntegrationTest extends GatewayTestCase
 
         $this->assertTrue($authorizeResponse->isSuccessful());
         $this->assertNotEmpty($authorizeResponse->getCardReference());
-        echo $authorizeResponse->getCardReference();
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Omnipay\FirstAtlanticCommerce\Message;
 
-use Omnipay\FirstAtlanticCommerce\Message\AbstractRequest;
-
 /**
  * FACPG2 Transaction Status Request
+ *
+ * Required parameters:
+ * transactionId - corresponds to the merchant's transaction ID
  */
 class StatusRequest extends AbstractRequest
 {

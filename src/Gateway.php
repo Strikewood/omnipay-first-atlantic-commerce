@@ -3,7 +3,6 @@
 namespace Omnipay\FirstAtlanticCommerce;
 
 use Omnipay\Common\AbstractGateway;
-use Omnipay\FirstAtlanticCommerce\ParameterTrait;
 
 /**
  * First Atlantic Commerce Payment Gateway 2 (XML POST Service)
