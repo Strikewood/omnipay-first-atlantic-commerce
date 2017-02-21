@@ -39,4 +39,15 @@ abstract class AbstractResponse extends BaseAbstractResponse
 
         return $array;
     }
+
+    /**
+     * This is mostly for convenience so you can get the Transaction ID from the response which FAC sends back with all
+     * of their responses except the Create Card. If you call this from CreateCardResponse, you will just get a null.
+     *
+     * @return null
+     */
+    public function getTransactionId()
+    {
+        return isset($this->data['OrderNumber']) ? $this->data['OrderNumber'] : null;
+    }
 }

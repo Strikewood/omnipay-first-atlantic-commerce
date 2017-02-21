@@ -19,6 +19,7 @@ Content-type: text/html; charset=utf-8
         <TokenizedPAN/>
     </CreditCardTransactionResults>
     <MerchangtId>123</MerchangtId>
+    <OrderNumber>1234</OrderNumber>
     <Signature>qx6W+o50NL4XlqH0+Z/eSx3qrCU=</Signature>
     <SignatureMethod>SHA1</SignatureMethod>
 </AuthorizeResponse>

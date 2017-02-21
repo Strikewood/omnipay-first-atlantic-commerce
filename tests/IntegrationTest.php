@@ -6,6 +6,7 @@ namespace tests;
 use Omnipay\FirstAtlanticCommerce\Gateway;
 use Omnipay\FirstAtlanticCommerce\Message\AuthorizeResponse;
 use Omnipay\FirstAtlanticCommerce\Message\CreateCardResponse;
+use Omnipay\FirstAtlanticCommerce\Message\TransactionModificationResponse;
 use Omnipay\FirstAtlanticCommerce\Message\UpdateCardResponse;
 use Omnipay\Tests\GatewayTestCase;
 
@@ -66,6 +67,7 @@ class IntegrationTest extends GatewayTestCase
     public function testAuthorizeCapture()
     {
         $transactionId = uniqid();
+        /** @var AuthorizeResponse $authResponse */
         $authResponse = $this->gateway->authorize([
             'amount'        => '15.00',
             'currency'      => 'USD',
@@ -74,7 +76,9 @@ class IntegrationTest extends GatewayTestCase
         ])->send();
 
         $this->assertTrue($authResponse->isSuccessful(), 'Authorize should succeed');
+        $this->assertEquals($transactionId, $authResponse->getTransactionId());
 
+        /** @var TransactionModificationResponse $captureResponse */
         $captureResponse = $this->gateway->capture([
             'amount'        => '15.00',
             'currency'      => 'USD',
@@ -82,7 +86,9 @@ class IntegrationTest extends GatewayTestCase
         ])->send();
 
         $this->assertTrue($captureResponse->isSuccessful(), 'Capture should succeed');
+        $this->assertEquals($transactionId, $captureResponse->getTransactionId());
 
+        /** @var TransactionModificationResponse $refundResponse */
         $refundResponse = $this->gateway->refund([
             'amount'        => '15.00',
             'currency'      => 'USD',
@@ -90,6 +96,7 @@ class IntegrationTest extends GatewayTestCase
         ])->send();
 
         $this->assertTrue($refundResponse->isSuccessful(), 'Refund should succeed');
+        $this->assertEquals($transactionId, $refundResponse->getTransactionId());
     }
 
     /**
@@ -99,6 +106,7 @@ class IntegrationTest extends GatewayTestCase
     public function testPurchaseVoidRefund()
     {
         $transactionId = uniqid();
+        /** @var AuthorizeResponse $purchaseResponse */
         $purchaseResponse = $this->gateway->purchase([
             'amount' => '20.00',
             'currency' => 'USD',
@@ -107,7 +115,9 @@ class IntegrationTest extends GatewayTestCase
         ])->send();
 
         $this->assertTrue($purchaseResponse->isSuccessful(), 'Purchase should succeed');
+        $this->assertEquals($transactionId, $purchaseResponse->getTransactionId());
 
+        /** @var TransactionModificationResponse $voidResponse */
         $voidResponse = $this->gateway->void([
             'amount' => '20.00',
             'currency' => 'USD',
@@ -115,7 +125,9 @@ class IntegrationTest extends GatewayTestCase
         ])->send();
 
         $this->assertFalse($voidResponse->isSuccessful(), 'Void should fail');
+        $this->assertEquals($transactionId, $voidResponse->getTransactionId());
 
+        /** @var TransactionModificationResponse $refundResponse */
         $refundResponse = $this->gateway->refund([
             'amount' => '20.00',
             'currency' => 'USD',
@@ -123,6 +135,7 @@ class IntegrationTest extends GatewayTestCase
         ])->send();
 
         $this->assertTrue($refundResponse->isSuccessful(), 'Purchase refund should succeed');
+        $this->assertEquals($transactionId, $refundResponse->getTransactionId());
     }
 
     /**

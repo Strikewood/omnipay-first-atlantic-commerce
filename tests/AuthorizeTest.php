@@ -131,12 +131,14 @@ class AuthorizeTest extends GatewayTestCase
     {
         $this->setMockHttpResponse('AuthorizeSuccess.txt');
 
+        /** @var AuthorizeResponse $response */
         $response = $this->gateway->authorize($this->purchaseOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals(1, $response->getCode());
         $this->assertEquals('Transaction is approved.', $response->getMessage());
         $this->assertEquals(307916543749, $response->getTransactionReference());
+        $this->assertEquals(1234, $response->getTransactionId());
     }
 
     /**
@@ -162,12 +164,14 @@ class AuthorizeTest extends GatewayTestCase
     {
         $this->setMockHttpResponse('AuthorizeSuccess.txt');
 
+        /** @var AuthorizeResponse $response */
         $response = $this->gateway->purchase($this->purchaseOptions)->send();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals(1, $response->getCode());
         $this->assertEquals('Transaction is approved.', $response->getMessage());
         $this->assertEquals(307916543749, $response->getTransactionReference());
+        $this->assertEquals(1234, $response->getTransactionId());
     }
 
     /**
