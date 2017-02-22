@@ -186,6 +186,9 @@ class IntegrationTest extends GatewayTestCase
         $this->assertEquals('Transaction is approved.', $statusResponse->getMessage());
     }
 
+    /**
+     * Test an Authorize message that also create's a card in FAC's system from the data in the authorize message.
+     */
     public function testAuthorizeWithCreateCard()
     {
         $transactionId = uniqid();
